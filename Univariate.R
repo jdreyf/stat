@@ -57,18 +57,20 @@ ComparMNAR_Univariate <- function(Xtrue,a=NULL,b=NULL,r,noise,Ns,modmecha,mecha,
       
       #MNAR or MAR mechanism
       if(mecha=="MNAR"){
-      prob <- sapply(X[,1],select_prob,modmecha)}else{prob <- sapply(X[,2],select_prob,modmecha)}
+        prob <- sapply(X[,1],select_prob,modmecha)
+      } else {
+        prob <- sapply(X[,2],select_prob,modmecha)
+      }
       compt=0
       missing=c()
       for (i in 1:n){
         u<-runif(1)
         compt=compt+(prob[i]>u)
-        if(prob[i]>u){missing=c(missing,i)}
+        if (prob[i]>u){ missing=c(missing,i) }
       }
       print(compt)
       XNA=X
       XNA[missing,1]=NA
-      
       
       ###############
       ####### Missing-data pattern
@@ -82,18 +84,9 @@ ComparMNAR_Univariate <- function(Xtrue,a=NULL,b=NULL,r,noise,Ns,modmecha,mecha,
       
       Y = cbind.data.frame(XNA,M[,1])
       
-      
-      ###############
-      ####### Optimization: Mean imputation and estimation
-      ###############
-      
-      X.mean <- as.matrix(ImputeMean(XNA))
-      
-      
       ###############
       ####### EM with modell
       ###############
-      
       
       #Fonction 
       ThetaNew=Initialize_theta(ImputeMean0(XNA),r)#on initialise Theta avec une matrice en rang inférieur
@@ -115,7 +108,6 @@ ComparMNAR_Univariate <- function(Xtrue,a=NULL,b=NULL,r,noise,Ns,modmecha,mecha,
         conv1=ParamNew$conv
         ccompt=ccompt+1
       }
-      
       
       diff=100
       ccompt2<-0
@@ -242,8 +234,6 @@ ComparMNAR_Univariate <- function(Xtrue,a=NULL,b=NULL,r,noise,Ns,modmecha,mecha,
       
     }
     
-    
-    
     ###############
     ####### Optimization: softImpute (SVD & softhresholding)
     ###############
@@ -315,114 +305,28 @@ ComparMNAR_Univariate <- function(Xtrue,a=NULL,b=NULL,r,noise,Ns,modmecha,mecha,
     }else{
       X1.soft.2.bis= (fit2$u%*%diag(fit2$d))%*%t(fit2$v)
     }
-    
-    ###############
-    ####### Optimization: imputePCA (regularized iterative PCA)
-    ###############
- 
-    print(paste("imputePCA",ksim))
-    
-    ####Without mask
-    list=c(0,1,2,3)
-    RES=NULL
-    RES2=NULL
-    for (i in 1:length(list)){
-      X.pca.true=imputePCA(XNA,ncp=list[i],maxiter=10000)$fittedX
-      RES2[i]=MSE(X.pca.true*(1-M),X*(1-M))
-      RES[i]=MSE(X.pca.true,Xtrue)
-    }
-    X.pca.true=imputePCA(XNA,ncp=list[which.min(RES)],maxiter=10000)$fittedX
-    X.pca.true.bis=imputePCA(XNA,ncp=list[which.min(RES2)],maxiter=10000)$fittedX
-    
-    ####With mask
-    list=c(0,1,2,3)
-    RES=NULL
-    RES2=NULL
-    for (i in 1:length(list)){
-      X.pca.true.2=imputePCA(Y,ncp=list[i],maxiter=10000)$fittedX
-      RES2[i]=MSE(X.pca.true.2[,1:p]*(1-M),X*(1-M))
-      RES[i]=MSE(X.pca.true.2[,1:p],Xtrue)
-    }
-    X.pca.true.2=imputePCA(Y,ncp=list[which.min(RES)],maxiter=10000)$fittedX
-    X.pca.true.2.bis=imputePCA(Y,ncp=list[which.min(RES2)],maxiter=10000)$fittedX
-    
-    ###############
-    ####### Mimi algorithm
-    ###############
-    
-    var.type = c(rep("gaussian", p),rep("binary", nbcol))
-    test <- mimi(Y, model = "low-rank", var.type = var.type, lambda1 = 0.05, trace.it = F, max.rank = min(dim(X))-1)
-    RES=NULL
-    RES2=NULL
-    for (i in 1:length(test$list.theta)){
-      X.mimi <- test$list.theta[[i]]
-      RES2[[i]]=MSE(X.mimi[,1:p]*(1-M),X*(1-M))
-      RES[[i]]=MSE(X.mimi[,1:p],Xtrue)
-    }
-    X.mimi <- test$list.theta[[which.min(RES)]]
-    X.mimi.bis <- test$list.theta[[which.min(RES2)]]
-    
-    ###############
-    ####### FISTA Algorithm
-    ###############
-    
-    print(paste("FISTA",ksim))
-    
-    ####Without mask
-    RES=NULL
-    RES2=NULL
-    gridParam=seq(0,lambda0(X)*1.1, length = 100) 
-    for(i in 1:length(gridParam)){
-      X.FISTA2<- FISTANA(as.matrix(XNA),as.matrix(M),gridParam[i],noise,alg="other")
-      RES2[i]=MSE(X.FISTA2[,1:p]*(1-M),X*(1-M))
-      RES[i]=MSE(X.FISTA2[,1:p],Xtrue)
-    }
-    X.FISTA2<- FISTANA(XNA,M,gridParam[which.min(RES)],noise,alg="other")
-    X.FISTA2.bis<- FISTANA(XNA,M,gridParam[which.min(RES2)],noise,alg="other")
-    
-    ####With mask
-    RES=NULL
-    RES2=NULL
-    gridParam=seq(0, lambda0(X)*1.1, length = 100) 
-    for(i in 1:length(gridParam)){
-      X.FISTA3<- FISTANA(Y,cbind.data.frame(M,M[,1:nbcol]),gridParam[i],noise,alg="other")
-      RES2[i]=MSE(X.FISTA3[,1:p]*(1-M),X*(1-M))
-      RES[i]=MSE(X.FISTA3[,1:p],Xtrue)
-    }
-    X.FISTA3<- FISTANA(Y,cbind.data.frame(M,M[,1:nbcol]),gridParam[which.min(RES)],noise,alg="other")
-    X.FISTA3.bis<- FISTANA(Y,cbind.data.frame(M,M[,1:nbcol]),gridParam[which.min(RES2)],noise,alg="other")
-    
-    ###############
-    ####### Random Forest
-    ###############
-    
-    print(paste("rf",ksim))
-    
-    X.rf <- missForest(XNA,ntree=100)$ximp
-    
-    Yrf=Y
-    Yrf[Yrf==0]=-10^6
-    Yrf[Yrf==1]=10^6
-    X.rf.2 <- missForest(Yrf,ntree=100)$ximp
-    
+
     
     ###############
     ####### MSE
     ###############
     
-    msePred=sapply(list(X.mean[,1:p]*(1-M),ThetaNew[,1:p]*(1-M),ThetabisNew[,1:p]*(1-M),ThetaNewTot[,1:p]*(1-M),ThetabisNewTot[,1:p]*(1-M),X1.soft[,1:p]*(1-M),X1.soft.bis[,1:p]*(1-M),X1.soft.2[,1:p]*(1-M),X1.soft.2.bis[,1:p]*(1-M),X.pca.true[,1:p]*(1-M),X.pca.true.bis[,1:p]*(1-M),X.pca.true.2[,1:p]*(1-M),X.pca.true.2.bis[,1:p]*(1-M),X.mimi[,1:p]*(1-M),X.mimi.bis[,1:p]*(1-M),X.FISTA2[,1:p]*(1-M),X.FISTA2.bis[,1:p]*(1-M),X.FISTA3[,1:p]*(1-M),X.FISTA3.bis[,1:p]*(1-M),X.rf[,1:p]*(1-M),X.rf.2[,1:p]*(1-M)),MSE,X2=X*(1-M))
-    mseTrue=sapply(list(X.mean[,1:p],ThetaNew[,1:p],ThetabisNew[,1:p],ThetaNewTot[,1:p],ThetabisNewTot[,1:p],X1.soft[,1:p],X1.soft.bis[,1:p],X1.soft.2[,1:p],X1.soft.2.bis[,1:p],X.pca.true[,1:p],X.pca.true.bis[,1:p],X.pca.true.2[,1:p],X.pca.true.2.bis[,1:p],X.mimi[,1:p],X.mimi.bis[,1:p],X.FISTA2[,1:p],X.FISTA2.bis[,1:p],X.FISTA3[,1:p],X.FISTA3.bis[,1:p],X.rf[,1:p],X.rf.2[,1:p]),MSE,X2=Xtrue)
+    # fig 2 looks like it only uses mseTrue for modelFISTAPred & modelFISTATot
+    msePred=sapply(list(ThetabisNew[, 1:p]*(1-M), ThetabisNewTot[, 1:p]*(1-M)))
     
-    names=c("Imputemean","modelsoftPred","modelFISTAPred","modelsoftTot","modelFISTATot","softTot","softPred","softmaskTot","softmaskPred","PCATot","PCAPred","PCAmaskTot","PCAmaskPred","mimiTot","mimiPred","FISTA","FISTAPred","FISTAmask","FISTAmaskPred","randomforest","randomforestmask")
+    mseTrue=sapply(list(ThetabisNew[, 1:p], ThetabisNewTot[, 1:p]))
+    
+    names=c("Imputemean","modelsoftPred","modelFISTAPred","modelsoftTot","modelFISTATot","softTot","softPred","softmaskTot",
+            "softmaskPred","PCATot","PCAPred","PCAmaskTot","PCAmaskPred","mimiTot","mimiPred","FISTA","FISTAPred","FISTAmask",
+            "FISTAmaskPred","randomforest","randomforestmask")
+    
+    ind <- which(names %in% c("modelFISTAPred", "modelFISTATot"))
+    names <- names[ind]
+    
     cbind(msePred,mseTrue,names)
   }
   
   return(results.list)
 }
 
-
-
-
-
-
-
+# stopCluster(cl)

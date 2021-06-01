@@ -4,22 +4,25 @@ source('PlotSimulation.R')
 #Univariate
 ######
 
-source('Univariate.R') #Paralell computation with 20 clusters
+source('Univariate.R') #Parallel computation with 20 clusters
 set.seed(4)
 n=100
 p=4
 r=1
 a=3
 b=0
-nbsim=50
+# nbsim=50
+nbsim=3
 noise=0.8
-Ns=500
+# Ns=500
+Ns=10
 dat=rnorm(n)
 Xtrue=cbind.data.frame(dat,dat*1.1,dat*1.2,dat*1.3)
 
 ##Figure 2 (logit, MNAR)
 resultUnivariate=ComparMNAR_Univariate(Xtrue,a,b,r,noise,Ns,"logit","MNAR",nbsim)
 Plot(resultUnivariate)
+
 ##Figure 5 (logit, MAR)
 resultMARUnivariate=ComparMNAR_Univariate(Xtrue,a,b,r,noise,Ns,"logit","MAR",nbsim) 
 Plot(resultMARUnivariate,type="WithoutMask")

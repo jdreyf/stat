@@ -30,5 +30,3 @@ simu <- function(n=100,p=10,S=4,sig=0.25){
   don = Xs  + matrix(rnorm(n*p, 0, sig), n, p)
   return(list(don=don,mu=Xs))
 }
-
-
