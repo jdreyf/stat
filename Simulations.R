@@ -15,11 +15,12 @@ b=0
 nbsim=3
 noise=0.8
 # Ns=500
-Ns=10
+Ns=2
 dat=rnorm(n)
 Xtrue=cbind.data.frame(dat,dat*1.1,dat*1.2,dat*1.3)
 
 ##Figure 2 (logit, MNAR)
+# nrows of result = number of nbsim simulations x number of methods
 resultUnivariate=ComparMNAR_Univariate(Xtrue,a,b,r,noise,Ns,"logit","MNAR",nbsim)
 Plot(resultUnivariate)
 

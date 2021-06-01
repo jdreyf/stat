@@ -17,14 +17,14 @@ registerDoSNOW(cl)
 # Description: For the univariate case (1 missing variable: the first one),this function allow to compare different algorithms and methods to impute and estimate matrices which contain MNAR or MAR missing values.
 # The function output is a list containing, for each simulation, the mean squared errors (the prediction error and the total error) for the different algorithms and methods.
 # Arguments: 
-  #Xtrue: the parameter matrix.
-  #a, b: the logistic regression parameters.
-  #r: rank of the parameter matrix.
-  #noise: sigma^2, the added noise to the parameter matrix.
-  #Ns: number of Monte Carlo simulations in the EM algorithm.
-  #modmecha: if "logit", the missing-data distribution is a logistic regression, otherwise it is a probit distribution.
-  #mecha: "MNAR" or "MAR".
-  #nbsim: number of simulations.
+#Xtrue: the parameter matrix.
+#a, b: the logistic regression parameters.
+#r: rank of the parameter matrix.
+#noise: sigma^2, the added noise to the parameter matrix.
+#Ns: number of Monte Carlo simulations in the EM algorithm.
+#modmecha: if "logit", the missing-data distribution is a logistic regression, otherwise it is a probit distribution.
+#mecha: "MNAR" or "MAR".
+#nbsim: number of simulations.
 #####
 
 ComparMNAR_Univariate <- function(Xtrue,a=NULL,b=NULL,r,noise,Ns,modmecha,mecha,nbsim){
@@ -51,26 +51,23 @@ ComparMNAR_Univariate <- function(Xtrue,a=NULL,b=NULL,r,noise,Ns,modmecha,mecha,
       #Logit or probit distribution
       select_prob <- function(x,modmecha){ #probability of selecting coordinate Xij
         if(modmecha=="logit"){
-        res=1/(1+exp(-a*(x-b)))}else{ res=pnorm(x)}
+          res=1/(1+exp(-a*(x-b)))}else{ res=pnorm(x)}
         return(res)
       }
       
       #MNAR or MAR mechanism
-      if(mecha=="MNAR"){
-        prob <- sapply(X[,1],select_prob,modmecha)
-      } else {
-        prob <- sapply(X[,2],select_prob,modmecha)
-      }
+      if(mecha=="MNAR"){prob <- sapply(X[,1],select_prob,modmecha)} else {prob <- sapply(X[,2],select_prob,modmecha)}
       compt=0
       missing=c()
       for (i in 1:n){
         u<-runif(1)
         compt=compt+(prob[i]>u)
-        if (prob[i]>u){ missing=c(missing,i) }
+        if(prob[i]>u){missing=c(missing,i)}
       }
       print(compt)
       XNA=X
       XNA[missing,1]=NA
+      
       
       ###############
       ####### Missing-data pattern
@@ -84,12 +81,21 @@ ComparMNAR_Univariate <- function(Xtrue,a=NULL,b=NULL,r,noise,Ns,modmecha,mecha,
       
       Y = cbind.data.frame(XNA,M[,1])
       
+      
+      ###############
+      ####### Optimization: Mean imputation and estimation
+      ###############
+      
+      X.mean <- as.matrix(ImputeMean(XNA))
+      
+      
       ###############
       ####### EM with modell
       ###############
       
+      
       #Fonction 
-      ThetaNew=Initialize_theta(ImputeMean0(XNA),r)#on initialise Theta avec une matrice en rang infÃ©rieur
+      ThetaNew=Initialize_theta(ImputeMean0(XNA),r)#on initialise Theta avec une matrice en rang inférieur
       ThetabisNew=ThetaNew
       aNew=a-1
       bNew=b-1
@@ -108,6 +114,7 @@ ComparMNAR_Univariate <- function(Xtrue,a=NULL,b=NULL,r,noise,Ns,modmecha,mecha,
         conv1=ParamNew$conv
         ccompt=ccompt+1
       }
+      
       
       diff=100
       ccompt2<-0
@@ -235,95 +242,16 @@ ComparMNAR_Univariate <- function(Xtrue,a=NULL,b=NULL,r,noise,Ns,modmecha,mecha,
     }
     
     ###############
-    ####### Optimization: softImpute (SVD & softhresholding)
-    ###############
-    
-    print(paste("softImpute",ksim))
-    
-    ####Without the mask
-    RES=NULL
-    RES2=NULL
-    gridlambda1=seq(0, lambda0(X)*0.8, length = 300)
-    for (i in 1:length(gridlambda1)){
-      fit1=softImpute(as.matrix(XNA),rank=min(dim(as.matrix(XNA)))-1,lambda=gridlambda1[i],maxit = 10000,type="svd")
-      if (fit1$d[1]==0){
-        X1.soft=as.matrix(ImputeMean(XNA))
-      }else if(length(fit1$d)==1){
-        X1.soft= (fit1$u*fit1$d)%*%t(fit1$v)
-      }else{
-        X1.soft= (fit1$u%*%diag(fit1$d))%*%t(fit1$v)
-      }
-      RES2[i]=MSE(X1.soft*(1-M),X*(1-M))
-      RES[i]=MSE(X1.soft,Xtrue)
-    }
-    fit1=softImpute(as.matrix(XNA),rank=min(dim(as.matrix(XNA)))-1,lambda=gridlambda1[which.min(RES)],maxit = 10000,type="svd")
-    if (fit1$d[1]==0){
-      X1.soft=as.matrix(ImputeMean(XNA))
-    }else if(length(fit1$d)==1){
-      X1.soft= (fit1$u*fit1$d)%*%t(fit1$v)
-    }else{
-      X1.soft= (fit1$u%*%diag(fit1$d))%*%t(fit1$v)
-    }
-    fit2=softImpute(as.matrix(XNA),rank=min(dim(as.matrix(XNA)))-1,lambda=gridlambda1[which.min(RES2)],maxit = 10000,type="svd")
-    if (fit2$d[1]==0){
-      X1.soft.bis=as.matrix(ImputeMean(XNA))
-    }else if(length(fit2$d)==1){
-      X1.soft.bis= (fit2$u*fit2$d)%*%t(fit2$v)
-    }else{
-      X1.soft.bis= (fit2$u%*%diag(fit2$d))%*%t(fit2$v)
-    }
-    
-    ####With the mask
-    RES=NULL
-    RES2=NULL
-    gridlambda1=seq(0, lambda0(X)*0.8, length = 300)
-    for (i in 1:length(gridlambda1)){
-      fit1=softImpute(as.matrix(Y),rank=min(dim(as.matrix(Y)))-1,lambda=gridlambda1[i],maxit = 10000,type="svd")
-      if (fit1$d[1]==0){
-        X1.soft.2=as.matrix(ImputeMean(Y))
-      }else if(length(fit1$d)==1){ 
-        X1.soft.2= (fit1$u*fit1$d)%*%t(fit1$v)
-      }else{
-        X1.soft.2= (fit1$u%*%diag(fit1$d))%*%t(fit1$v)
-      }
-      RES2[i]=MSE(X1.soft.2[,1:p]*(1-M),X*(1-M))
-      RES[i]=MSE(X1.soft.2[,1:p],Xtrue)
-    }
-    fit1=softImpute(as.matrix(Y),rank=min(dim(as.matrix(Y)))-1,lambda=gridlambda1[which.min(RES)],maxit = 10000,type="svd")
-    if (fit1$d[1]==0){
-      X1.soft.2=as.matrix(ImputeMean(Y))
-    }else if(length(fit1$d)==1){
-      X1.soft.2= (fit1$u*fit1$d)%*%t(fit1$v)
-    }else{
-      X1.soft.2= (fit1$u%*%diag(fit1$d))%*%t(fit1$v)
-    }
-    fit2=softImpute(as.matrix(Y),rank=min(dim(as.matrix(Y)))-1,lambda=gridlambda1[which.min(RES2)],maxit = 10000,type="svd")
-    if (fit2$d[1]==0){
-      X1.soft.2.bis=as.matrix(ImputeMean(Y))
-    }else if(length(fit2$d)==1){
-      X1.soft.2.bis= (fit2$u*fit2$d)%*%t(fit2$v)
-    }else{
-      X1.soft.2.bis= (fit2$u%*%diag(fit2$d))%*%t(fit2$v)
-    }
-
-    
-    ###############
     ####### MSE
     ###############
     
-    # fig 2 looks like it only uses mseTrue for modelFISTAPred & modelFISTATot
-    msePred=sapply(list(ThetabisNew[, 1:p]*(1-M), ThetabisNewTot[, 1:p]*(1-M)))
+    msePred=sapply(list(ThetabisNew[,1:p]*(1-M), ThetabisNewTot[,1:p]*(1-M)), FUN=MSE, X2=X*(1-M))
+    mseTrue=sapply(list(ThetabisNew[,1:p], ThetabisNewTot[,1:p]), FUN=MSE, X2=Xtrue)
     
-    mseTrue=sapply(list(ThetabisNew[, 1:p], ThetabisNewTot[, 1:p]))
+    # names=c("Imputemean","modelsoftPred","modelFISTAPred","modelsoftTot","modelFISTATot","softTot","softPred","softmaskTot","softmaskPred","PCATot","PCAPred","PCAmaskTot","PCAmaskPred","mimiTot","mimiPred","FISTA","FISTAPred","FISTAmask","FISTAmaskPred","randomforest","randomforestmask")
+    names <- c("modelFISTAPred", "modelFISTATot")
     
-    names=c("Imputemean","modelsoftPred","modelFISTAPred","modelsoftTot","modelFISTATot","softTot","softPred","softmaskTot",
-            "softmaskPred","PCATot","PCAPred","PCAmaskTot","PCAmaskPred","mimiTot","mimiPred","FISTA","FISTAPred","FISTAmask",
-            "FISTAmaskPred","randomforest","randomforestmask")
-    
-    ind <- which(names %in% c("modelFISTAPred", "modelFISTATot"))
-    names <- names[ind]
-    
-    cbind(msePred,mseTrue,names)
+    cbind(msePred, mseTrue, names)
   }
   
   return(results.list)
