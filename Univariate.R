@@ -27,6 +27,8 @@ registerDoSNOW(cl)
 #nbsim: number of simulations.
 #####
 
+# seems to loop IterEM for FISTA / pred twice: once with ccompt and again with Tt
+
 ComparMNAR_Univariate <- function(Xtrue,a=NULL,b=NULL,r,noise,Ns,modmecha,mecha,nbsim){
   
   nbcol=1
@@ -49,13 +51,14 @@ ComparMNAR_Univariate <- function(Xtrue,a=NULL,b=NULL,r,noise,Ns,modmecha,mecha,
       X=Xtrue+matrix(data=rnorm(n*p,0,sqrt(noise)),ncol=p)
       
       #Logit or probit distribution
+      # uses a, b from environment :-(
       select_prob <- function(x,modmecha){ #probability of selecting coordinate Xij
         if(modmecha=="logit"){
           res=1/(1+exp(-a*(x-b)))}else{ res=pnorm(x)}
         return(res)
       }
       
-      #MNAR or MAR mechanism
+      # simulate missing values based on mechanism
       if(mecha=="MNAR"){prob <- sapply(X[,1],select_prob,modmecha)} else {prob <- sapply(X[,2],select_prob,modmecha)}
       compt=0
       missing=c()
@@ -68,34 +71,17 @@ ComparMNAR_Univariate <- function(Xtrue,a=NULL,b=NULL,r,noise,Ns,modmecha,mecha,
       XNA=X
       XNA[missing,1]=NA
       
-      
-      ###############
-      ####### Missing-data pattern
-      ###############
-      
       M = 1-is.na(XNA)
       
-      ###############
-      ####### Concatenating the data matrix and the mask
-      ###############
-      
+      # Concatenating the data matrix and the mask
       Y = cbind.data.frame(XNA,M[,1])
-      
-      
-      ###############
-      ####### Optimization: Mean imputation and estimation
-      ###############
       
       X.mean <- as.matrix(ImputeMean(XNA))
       
-      
-      ###############
-      ####### EM with modell
-      ###############
-      
-      
-      #Fonction 
-      ThetaNew=Initialize_theta(ImputeMean0(XNA),r)#on initialise Theta avec une matrice en rang inférieur
+      # EM with modell
+      # theta_hat initialized with mean imputed matrix 
+      # "bis" variables are for FISTA; others are for soft thresholding
+      ThetaNew=Initialize_theta(ImputeMean0(XNA),r) #on initialise Theta avec une matrice en rang inférieur
       ThetabisNew=ThetaNew
       aNew=a-1
       bNew=b-1
