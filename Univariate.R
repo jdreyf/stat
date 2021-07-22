@@ -81,8 +81,9 @@ ComparMNAR_Univariate <- function(Xtrue,a=NULL,b=NULL,r,noise,Ns,modmecha,mecha,
       # EM with modell
       # theta_hat initialized with mean imputed matrix
       # "bis" variables are for FISTA; others are for soft thresholding
-      ThetaNew=Initialize_theta(ImputeMean0(XNA),r) #on initialise Theta avec une matrice en rang inf?rieur
+      ThetaNew=Initialize_theta(ImputeMean0(XNA),r) #on initialise Theta avec une matrice en rang inferieur
       ThetabisNew=ThetaNew
+      # not sure why abisNew=a-1. I guess it's ok, since same for all methods.
       aNew=a-1
       bNew=b-1
       abisNew=a-1
@@ -104,6 +105,10 @@ ComparMNAR_Univariate <- function(Xtrue,a=NULL,b=NULL,r,noise,Ns,modmecha,mecha,
 
       diff=100
       ccompt2<-0
+      # 20 iterations & then get new values for: abisNew, bbisNew, conv2
+      # see how much theta is changing between iterations
+      # use these updated values in for (t in 1:Tt)
+      # how else to initialize a, b?
       while(ccompt2 < 20){
         ParamNew <- IterEM(Xtrue,X,XNA,ThetabisNew,abisNew,bbisNew,M,Ns,noise,algo="FISTA",lam="Pred",nbcol=1)
         diff=ParamNew$diff
@@ -145,9 +150,9 @@ ComparMNAR_Univariate <- function(Xtrue,a=NULL,b=NULL,r,noise,Ns,modmecha,mecha,
 
         setTxtProgressBar(pb = pb, value = t)
       }
+      # conv is boolean: if any R UE --> converged; o/w failed
       if(sum(conv3)==0){conv3=FALSE}else{conv3=TRUE}
       if(sum(conv4)==0){conv4=FALSE}else{conv4=TRUE}
-
 
       ThetaNew=Theta[[Tt]]
       ThetabisNew=Thetabis[[Tt]]
