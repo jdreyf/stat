@@ -1,4 +1,4 @@
-source("amputation.R",local=TRUE)
+source("amputation.R", local=TRUE)
 
 cv_soft <- function(y,
                    N = 10,
@@ -36,7 +36,7 @@ cv_soft <- function(y,
              imp[is.na(yy)] <- res[is.na(yy)]
              return(sqrt(sum((res - y) ^ 2, na.rm = T)))
            })
-    
+
   })
   res.cv <- colMeans(do.call(rbind, res.cv))
   l <- which.min(res.cv)
