@@ -217,40 +217,97 @@ pre code {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShtaXNzTURBKVxuYGBgIn0= -->
-<pre class="r"><code>library(missMDA)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YShvem9uZSlcbm96b25lIDwtIG96b25lWzE6MTFdICNvbmx5IHF1YW50aXRhdGl2ZSB2YXJpYWJsZXNcbnN1bShpcy5uYShvem9uZSkpXG5YIDwtIGRhdGEubWF0cml4KG96b25lKVxuYGBgIn0= -->
-<pre class="r"><code>data(ozone)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxubGlicmFyeShtaXNzTURBKVxuYGBgXG5gYGAifQ== -->
+<pre class="r"><code>```r
+library(missMDA)</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZGF0YShvem9uZSlcbm96b25lIDwtIG96b25lWzE6MTFdICNvbmx5IHF1YW50aXRhdGl2ZSB2YXJpYWJsZXNcbnN1bShpcy5uYShvem9uZSkpXG5YIDwtIGRhdGEubWF0cml4KG96b25lKVxuYGBgXG5gYGAifQ== --&gt;
+
+```r
+```r
+data(ozone)
 ozone &lt;- ozone[1:11] #only quantitative variables
 sum(is.na(ozone))
 X &lt;- data.matrix(ozone)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc291cmNlKFwiRU1tb2RlbF9yZWFsZGF0YS5SXCIpXG5gYGAifQ== -->
-<pre class="r"><code>source(&quot;EMmodel_realdata.R&quot;)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShGYWN0b01pbmVSKVxubGlicmFyeShkZW5vaXNlUilcbmBgYCJ9 -->
-<pre class="r"><code>library(FactoMineR)
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuc291cmNlKFxcRU1tb2RlbF9yZWFsZGF0YS5SXFwpXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+source(\EMmodel_realdata.R\)</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxubGlicmFyeShGYWN0b01pbmVSKVxubGlicmFyeShkZW5vaXNlUilcbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+library(FactoMineR)
 library(denoiseR)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2NhbGU9VFJVRVxuaWYoc2NhbGU9PVRSVUUpe1xuICBtZWFuWCA8LSBhcHBseShYLCAyLG1lYW4sbmEucm09VFJVRSlcbiAgWF90cmFpbl9vcmQgPC0gdCh0KFgpIC0gbWVhblgpXG4gIGV0WCA8LSBhcHBseShYLCAyLHNkLG5hLnJtPVRSVUUpXG4gIFggPC0gdCh0KFhfdHJhaW5fb3JkKS9ldFgpXG59XG5uY3A9ZXN0aW1fbmNwUENBKFgsbWV0aG9kLmN2PVwia2ZvbGRcIikkbmNwXG5wcmludChuY3ApXG5jb21wPWltcHV0ZVBDQShYLG5jcD1uY3ApJGNvbXBsZXRlT2JzXG5zaWdtYSA9IGVzdGltX3NpZ21hKGNvbXAsaz1uY3ApIFxuaWYoc2NhbGU9PVRSVUUpe1xuICBYIDwtIHQodChYKSAqIGV0WCApXG4gIFggPC0gdCh0KFgpICsgbWVhblggKVxufVxubm9pc2UgPC0gc2lnbWFeMlxuYGBgIn0= -->
-<pre class="r"><code>scale=TRUE
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2NhbGU9VFJVRVxuaWYoc2NhbGU9PVRSVUUpe1xuICBtZWFuWCA8LSBhcHBseShYLCAyLG1lYW4sbmEucm09VFJVRSlcbiAgWF90cmFpbl9vcmQgPC0gdCh0KFgpIC0gbWVhblgpXG4gIGV0WCA8LSBhcHBseShYLCAyLHNkLG5hLnJtPVRSVUUpXG4gIFggPC0gdCh0KFhfdHJhaW5fb3JkKS9ldFgpXG59XG5uY3A9ZXN0aW1fbmNwUENBKFgsbWV0aG9kLmN2PVwia2ZvbGRcIikkbmNwXG5wcmludChuY3ApXG5jb21wPWltcHV0ZVBDQShYLG5jcD1uY3ApJGNvbXBsZXRlT2JzXG5zaWdtYSA9IGVzdGltX3NpZ21hKGNvbXAsaz1uY3ApIFxuaWYoc2NhbGU9PVRSVUUpe1xuICBYIDwtIHQodChYKSAqIGV0WCApXG4gIFggPC0gdCh0KFgpICsgbWVhblggKVxufVxubm9pc2UgPC0gc2lnbWFeMlxuYGBgIn0= --&gt;
+
+```r
+scale=TRUE
 if(scale==TRUE){
   meanX &lt;- apply(X, 2,mean,na.rm=TRUE)
   X_train_ord &lt;- t(t(X) - meanX)
@@ -271,24 +328,54 @@ noise &lt;- sigma^2</code></pre>
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmJjb2wgPC0gbmNvbChYKSAjYWxsIHRoZSB2YXJpYWJsZXMgY29udGFpbiBtaXNzaW5nIHZhbHVlc1xuTnMgPC0gNTAwXG5hIDwtIHJlcCgxLG5iY29sKSAjcmFuZG9tIGluaXRpYWxpemF0aW9uIChiZXR3ZWVuIC0xIGFuZCAxKVxuYiA8LSByZXAoLTEsbmJjb2wpICAjcmFuZG9tIGluaXRpYWxpemF0aW9uIChiZXR3ZWVuIC0xIGFuZCAxKVxucmVzIDwtIEVNTU5BUl9NdWx0aXZhcmlhdGVfcmVhbGRhdGEoWCxhLGIsbm9pc2UsTnMsbmJjb2wsc2NhbGU9VFJVRSxuYml0PTIpXG5gYGAifQ== -->
-<pre class="r"><code>nbcol &lt;- ncol(X) #all the variables contain missing values
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuc2NhbGU9VFJVRVxuaWYoc2NhbGU9PVRSVUUpe1xuICBtZWFuWCA8LSBhcHBseShYLCAyLG1lYW4sbmEucm09VFJVRSlcbiAgWF90cmFpbl9vcmQgPC0gdCh0KFgpIC0gbWVhblgpXG4gIGV0WCA8LSBhcHBseShYLCAyLHNkLG5hLnJtPVRSVUUpXG4gIFggPC0gdCh0KFhfdHJhaW5fb3JkKS9ldFgpXG59XG5uY3A9ZXN0aW1fbmNwUENBKFgsbWV0aG9kLmN2PVxca2ZvbGRcXCkkbmNwXG5wcmludChuY3ApXG5jb21wPWltcHV0ZVBDQShYLG5jcD1uY3ApJGNvbXBsZXRlT2JzXG5zaWdtYSA9IGVzdGltX3NpZ21hKGNvbXAsaz1uY3ApIFxuaWYoc2NhbGU9PVRSVUUpe1xuICBYIDwtIHQodChYKSAqIGV0WCApXG4gIFggPC0gdCh0KFgpICsgbWVhblggKVxufVxubm9pc2UgPC0gc2lnbWFeMlxuYGBgXG5gYGAifQ== -->
+<pre class="r"><code>```r
+scale=TRUE
+if(scale==TRUE){
+  meanX &lt;- apply(X, 2,mean,na.rm=TRUE)
+  X_train_ord &lt;- t(t(X) - meanX)
+  etX &lt;- apply(X, 2,sd,na.rm=TRUE)
+  X &lt;- t(t(X_train_ord)/etX)
+}
+ncp=estim_ncpPCA(X,method.cv=\kfold\)$ncp
+print(ncp)
+comp=imputePCA(X,ncp=ncp)$completeObs
+sigma = estim_sigma(comp,k=ncp) 
+if(scale==TRUE){
+  X &lt;- t(t(X) * etX )
+  X &lt;- t(t(X) + meanX )
+}
+noise &lt;- sigma^2</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxubmJjb2wgPC0gbmNvbChYKSAjYWxsIHRoZSB2YXJpYWJsZXMgY29udGFpbiBtaXNzaW5nIHZhbHVlc1xuTnMgPC0gNTAwXG5hIDwtIHJlcCgxLG5iY29sKSAjcmFuZG9tIGluaXRpYWxpemF0aW9uIChiZXR3ZWVuIC0xIGFuZCAxKVxuYiA8LSByZXAoLTEsbmJjb2wpICAjcmFuZG9tIGluaXRpYWxpemF0aW9uIChiZXR3ZWVuIC0xIGFuZCAxKVxucmVzIDwtIEVNTU5BUl9NdWx0aXZhcmlhdGVfcmVhbGRhdGEoWCxhLGIsbm9pc2UsTnMsbmJjb2wsc2NhbGU9VFJVRSxuYml0PTIpXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+nbcol &lt;- ncol(X) #all the variables contain missing values
 Ns &lt;- 500
 a &lt;- rep(1,nbcol) #random initialization (between -1 and 1)
 b &lt;- rep(-1,nbcol)  #random initialization (between -1 and 1)
 res &lt;- EMMNAR_Multivariate_realdata(X,a,b,noise,Ns,nbcol,scale=TRUE,nbit=2)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmVzJG5hbWVzXG5yZXMkZGF0YV9pbXBbWzFdXVxuYGBgIn0= -->
-<pre class="r"><code>res$names
-res$data_imp[[1]]</code></pre>
+<p>```</p>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlJlYWwgRGF0YSBFTSBhbGdvcml0aG0gZm9yIE1OQVIgZGF0YSINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQoNCmBgYHtyfQ0KbGlicmFyeShtaXNzTURBKQ0KYGBgDQoNCg0KYGBge3J9DQpkYXRhKG96b25lKQ0Kb3pvbmUgPC0gb3pvbmVbMToxMV0gI29ubHkgcXVhbnRpdGF0aXZlIHZhcmlhYmxlcw0Kc3VtKGlzLm5hKG96b25lKSkNClggPC0gZGF0YS5tYXRyaXgob3pvbmUpDQpgYGANCg0KYGBge3J9DQpzb3VyY2UoIkVNbW9kZWxfcmVhbGRhdGEuUiIpDQpgYGANCg0KYGBge3J9DQpsaWJyYXJ5KEZhY3RvTWluZVIpDQpsaWJyYXJ5KGRlbm9pc2VSKQ0KYGBgDQoNCmBgYHtyLCBFc3RpbWF0aW9uIG9mIHRoZSBub2lzZSBsZXZlbH0NCnNjYWxlPVRSVUUNCmlmKHNjYWxlPT1UUlVFKXsNCiAgbWVhblggPC0gYXBwbHkoWCwgMixtZWFuLG5hLnJtPVRSVUUpDQogIFhfdHJhaW5fb3JkIDwtIHQodChYKSAtIG1lYW5YKQ0KICBldFggPC0gYXBwbHkoWCwgMixzZCxuYS5ybT1UUlVFKQ0KICBYIDwtIHQodChYX3RyYWluX29yZCkvZXRYKQ0KfQ0KbmNwPWVzdGltX25jcFBDQShYLG1ldGhvZC5jdj0ia2ZvbGQiKSRuY3ANCnByaW50KG5jcCkNCmNvbXA9aW1wdXRlUENBKFgsbmNwPW5jcCkkY29tcGxldGVPYnMNCnNpZ21hID0gZXN0aW1fc2lnbWEoY29tcCxrPW5jcCkgDQppZihzY2FsZT09VFJVRSl7DQogIFggPC0gdCh0KFgpICogZXRYICkNCiAgWCA8LSB0KHQoWCkgKyBtZWFuWCApDQp9DQpub2lzZSA8LSBzaWdtYV4yDQpgYGANCg0KYGBge3J9DQpuYmNvbCA8LSBuY29sKFgpICNhbGwgdGhlIHZhcmlhYmxlcyBjb250YWluIG1pc3NpbmcgdmFsdWVzDQpOcyA8LSA1MDANCmEgPC0gcmVwKDEsbmJjb2wpICNyYW5kb20gaW5pdGlhbGl6YXRpb24gKGJldHdlZW4gLTEgYW5kIDEpDQpiIDwtIHJlcCgtMSxuYmNvbCkgICNyYW5kb20gaW5pdGlhbGl6YXRpb24gKGJldHdlZW4gLTEgYW5kIDEpDQpyZXMgPC0gRU1NTkFSX011bHRpdmFyaWF0ZV9yZWFsZGF0YShYLGEsYixub2lzZSxOcyxuYmNvbCxzY2FsZT1UUlVFLG5iaXQ9MikNCmBgYA0KDQpgYGB7cn0NCnJlcyRuYW1lcw0KcmVzJGRhdGFfaW1wW1sxXV0NCmBgYA==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlJlYWwgRGF0YSBFTSBhbGdvcml0aG0gZm9yIE1OQVIgZGF0YSINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQoNCmBgYHtyfQ0KbGlicmFyeShtaXNzTURBKQ0KYGBgDQoNCg0KYGBge3J9DQpkYXRhKG96b25lKQ0Kb3pvbmUgPC0gb3pvbmVbMToxMV0gI29ubHkgcXVhbnRpdGF0aXZlIHZhcmlhYmxlcw0Kc3VtKGlzLm5hKG96b25lKSkNClggPC0gZGF0YS5tYXRyaXgob3pvbmUpDQpgYGANCg0KYGBge3J9DQpzb3VyY2UoIkVNbW9kZWxfcmVhbGRhdGEuUiIpDQpgYGANCg0KYGBge3J9DQpsaWJyYXJ5KEZhY3RvTWluZVIpDQpsaWJyYXJ5KGRlbm9pc2VSKQ0KYGBgDQoNCmBgYHtyLCBFc3RpbWF0aW9uIG9mIHRoZSBub2lzZSBsZXZlbH0NCnNjYWxlPVRSVUUNCmlmKHNjYWxlPT1UUlVFKXsNCiAgbWVhblggPC0gYXBwbHkoWCwgMixtZWFuLG5hLnJtPVRSVUUpDQogIFhfdHJhaW5fb3JkIDwtIHQodChYKSAtIG1lYW5YKQ0KICBldFggPC0gYXBwbHkoWCwgMixzZCxuYS5ybT1UUlVFKQ0KICBYIDwtIHQodChYX3RyYWluX29yZCkvZXRYKQ0KfQ0KbmNwPWVzdGltX25jcFBDQShYLG1ldGhvZC5jdj0ia2ZvbGQiKSRuY3ANCnByaW50KG5jcCkNCmNvbXA9aW1wdXRlUENBKFgsbmNwPW5jcCkkY29tcGxldGVPYnMNCnNpZ21hID0gZXN0aW1fc2lnbWEoY29tcCxrPW5jcCkgDQppZihzY2FsZT09VFJVRSl7DQogIFggPC0gdCh0KFgpICogZXRYICkNCiAgWCA8LSB0KHQoWCkgKyBtZWFuWCApDQp9DQpub2lzZSA8LSBzaWdtYV4yDQpgYGANCg0KYGBge3J9DQpuYmNvbCA8LSBuY29sKFgpICNhbGwgdGhlIHZhcmlhYmxlcyBjb250YWluIG1pc3NpbmcgdmFsdWVzDQpOcyA8LSA1MDANCmEgPC0gcmVwKDEsbmJjb2wpICNyYW5kb20gaW5pdGlhbGl6YXRpb24gKGJldHdlZW4gLTEgYW5kIDEpDQpiIDwtIHJlcCgtMSxuYmNvbCkgICNyYW5kb20gaW5pdGlhbGl6YXRpb24gKGJldHdlZW4gLTEgYW5kIDEpDQpyZXMgPC0gRU1NTkFSX011bHRpdmFyaWF0ZV9yZWFsZGF0YShYLGEsYixub2lzZSxOcyxuYmNvbCxzY2FsZT1UUlVFLG5iaXQ9MikgI2luIEVNbW9kZWxfcmVhbGRhdGEuUg0KYGBgDQoNCmBgYHtyfQ0KcmVzJG5hbWVzDQpyZXMkZGF0YV9pbXBbWzFdXQ0KYGBg</div>
 
 
 

@@ -48,7 +48,7 @@ nbcol <- ncol(X) #all the variables contain missing values
 Ns <- 500
 a <- rep(1,nbcol) #random initialization (between -1 and 1)
 b <- rep(-1,nbcol)  #random initialization (between -1 and 1)
-res <- EMMNAR_Multivariate_realdata(X,a,b,noise,Ns,nbcol,scale=TRUE,nbit=2)
+res <- EMMNAR_Multivariate_realdata(X,a,b,noise,Ns,nbcol,scale=TRUE,nbit=2) #in EMmodel_realdata.R
 ```
 
 ```{r}
